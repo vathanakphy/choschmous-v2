@@ -1,5 +1,5 @@
-import { EventsPage } from '@/ui/features/events';
+import { EventsDrillDownPage } from '@/ui/features/events';
 
 export default function AdminEventsPage() {
-  return <EventsPage />;
+  return <EventsDrillDownPage role="admin" />;
 }

@@ -7,8 +7,13 @@ import type { SessionData } from '@/infrastructure/session/session.service';
 
 const SESSION_PASSWORD = process.env.SESSION_SECRET ?? 'change-this-secret-to-at-least-32-chars!!';
 
+// ⚠️ TEMPORARY: Auth disabled for development
+// TODO: Re-enable authentication before production
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
+
+  // Auth check temporarily disabled - remove this return to re-enable
+  // return NextResponse.next();
 
   if (pathname.startsWith('/admin') || pathname.startsWith('/superadmin')) {
     const res = NextResponse.next();
