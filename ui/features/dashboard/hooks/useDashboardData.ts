@@ -6,10 +6,20 @@ import type { ApiResponse } from '@/types/api';
 import type { DashboardPayload } from '../types/Dashboard.types';
 
 const EMPTY: DashboardPayload = {
-  stats: { events: 0, sports: 0, participants: 0, registrations: 0, organizations: 0 },
+  stats: {
+    events: 0,
+    sports: 0,
+    participants: 0,
+    registrations: 0,
+    organizations: 0,
+    athletes: 0,
+    leaders: 0,
+  },
   events: [],
   sports: [],
   topOrganizations: [],
+  recentEnrollments: [],
+  genderDistribution: { male: 0, female: 0, other: 0 },
 };
 
 export function useDashboardData() {
@@ -29,7 +39,15 @@ export function useDashboardData() {
         throw new Error(json.success ? 'Failed to load dashboard' : json.error);
       }
 
-      setData(json.data);
+      setData({
+        ...EMPTY,
+        ...json.data,
+        stats: { ...EMPTY.stats, ...json.data.stats },
+        genderDistribution: {
+          ...EMPTY.genderDistribution,
+          ...(json.data.genderDistribution ?? {}),
+        },
+      });
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed to load dashboard');
       setData(EMPTY);

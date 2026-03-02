@@ -8,7 +8,6 @@ import { cn } from '@/lib/utils';
 
 /**
  * FormError - Consistent error message display
- * Replaces duplicate: <p className="text-sm text-red-600 mt-1">{error}</p>
  */
 interface FormErrorProps {
   message?: string | null;
@@ -18,7 +17,7 @@ interface FormErrorProps {
 export function FormError({ message, className }: FormErrorProps) {
   if (!message) return null;
   return (
-    <p className={cn('text-sm text-red-600 mt-1', className)}>
+    <p className={cn('text-destructive mt-1 text-xs', className)} role="alert">
       {message}
     </p>
   );
@@ -35,18 +34,16 @@ interface SectionTitleProps {
   centered?: boolean;
 }
 
-export function SectionTitle({ 
-  children, 
-  subtitle, 
+export function SectionTitle({
+  children,
+  subtitle,
   className,
-  centered = true 
+  centered = true,
 }: SectionTitleProps) {
   return (
     <div className={cn('space-y-2', centered && 'text-center', className)}>
-      <h2 className="text-3xl font-bold tracking-tight">{children}</h2>
-      {subtitle && (
-        <p className="text-muted-foreground text-lg">{subtitle}</p>
-      )}
+      <h2 className="text-foreground text-2xl font-bold tracking-tight">{children}</h2>
+      {subtitle && <p className="text-muted-foreground text-base">{subtitle}</p>}
     </div>
   );
 }
@@ -62,19 +59,17 @@ interface FormFieldProps {
   className?: string;
 }
 
-export function FormField({ 
-  label, 
-  error, 
-  required, 
-  children, 
-  className 
-}: FormFieldProps) {
+export function FormField({ label, error, required, children, className }: FormFieldProps) {
   return (
-    <div className={cn('space-y-1', className)}>
+    <div className={cn('space-y-1.5', className)}>
       {label && (
-        <label className="text-sm font-medium leading-none">
+        <label className="text-foreground text-sm leading-none font-medium">
           {label}
-          {required && <span className="text-red-500 ml-1">*</span>}
+          {required && (
+            <span className="text-destructive ml-1" aria-hidden>
+              *
+            </span>
+          )}
         </label>
       )}
       {children}
@@ -97,8 +92,8 @@ export const InputWithError = React.forwardRef<HTMLInputElement, InputWithErrorP
         <input
           ref={ref}
           className={cn(
-            'flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
-            error && 'border-red-500',
+            'border-input bg-background placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full rounded-lg border px-3 py-2 text-sm shadow-xs transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+            error && 'border-destructive',
             className
           )}
           {...props}

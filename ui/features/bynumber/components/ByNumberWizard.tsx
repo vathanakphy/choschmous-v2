@@ -2,10 +2,10 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { AnimatePresence, motion } from 'framer-motion';
 import { Calendar, Building2, TableProperties, CheckCircle2, PartyPopper } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useStepWizard } from '@/ui/components/navigation/useStepWizard';
+import { WizardShell } from '@/ui/components/navigation/WizardShell';
 import { ByNumberSidebar } from './ByNumberSidebar';
 import { useByNumber, validateByNumberStep } from '../hooks/useByNumber';
 import type { ByNumberErrors } from '../types/ByNumber.types';
@@ -182,8 +182,9 @@ export function ByNumberWizard({
   const hideNav = wizard.activeIndex >= 3;
 
   return (
-    <div className="reg-split-layout min-h-[80vh]">
-      <ByNumberSidebar
+    <WizardShell
+      sidebar={
+        <ByNumberSidebar
         steps={wizard.stepsWithState.map((s, i) => ({
           ...s,
           icon: ICONS[i],
@@ -191,47 +192,17 @@ export function ByNumberWizard({
         activeIndex={wizard.activeIndex}
         gotoStep={goToStep}
       />
-
-      <div className="reg-content flex-1 overflow-y-auto p-6">
-        {Object.keys(errors).length > 0 && (
-          <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-            សូមបំពេញព័ត៌មានដែលខ្វះ
-          </div>
-        )}
-
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={wizard.activeIndex}
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -30 }}
-            transition={{ type: 'tween', duration: 0.3, ease: 'easeInOut' }}
-          >
-            {renderStep()}
-          </motion.div>
-        </AnimatePresence>
-
-        {!hideNav && (
-          <div className="mt-6 flex justify-between">
-            <button
-              type="button"
-              onClick={wizard.prevStep}
-              disabled={wizard.activeIndex === 0}
-              className="rounded-md border border-slate-200 px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 disabled:opacity-40"
-            >
-              ត្រលប់
-            </button>
-            <button
-              type="button"
-              onClick={() => attemptNext()}
-              className="rounded-full px-8 py-2 text-sm font-medium text-white hover:opacity-90"
-              style={{ backgroundColor: 'var(--reg-indigo-600)' }}
-            >
-              បន្ត
-            </button>
-          </div>
-        )}
-      </div>
-    </div>
+      }
+      activeIndex={wizard.activeIndex}
+      errors={errors}
+      hideNav={hideNav}
+      onPrev={wizard.prevStep}
+      onNext={() => attemptNext()}
+      prevDisabled={wizard.activeIndex === 0}
+      className="reg-split-layout min-h-[80vh]"
+      contentClassName="reg-content"
+    >
+      {renderStep()}
+    </WizardShell>
   );
 }

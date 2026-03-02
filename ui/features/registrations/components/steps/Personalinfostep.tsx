@@ -107,7 +107,10 @@ export function PortraitUpload({ file, slotId, onFile, error }: PortraitUploadPr
 
   return (
     <div className="flex flex-col items-center gap-2">
-      <p className="font-mono text-[9px] text-slate-300 select-all" title="Storage slot ID">
+      <p
+        className="text-muted-foreground/40 font-mono text-[9px] select-all"
+        title="Storage slot ID"
+      >
         {slotId}
       </p>
       <div
@@ -124,10 +127,10 @@ export function PortraitUpload({ file, slotId, onFile, error }: PortraitUploadPr
         }}
         className={[
           'relative cursor-pointer overflow-hidden rounded-2xl border-2 border-dashed transition-all duration-200',
-          'shadow-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none',
+          'focus:ring-primary/60 shadow-sm focus:ring-2 focus:outline-none',
           error
-            ? 'border-red-400 bg-red-50'
-            : 'border-slate-300 bg-white hover:border-indigo-400 hover:bg-indigo-50',
+            ? 'border-destructive/60 bg-destructive/5'
+            : 'border-border bg-card hover:border-primary/40 hover:bg-primary/5',
         ].join(' ')}
         style={{ width: 128, height: 180 }}
       >
@@ -141,7 +144,7 @@ export function PortraitUpload({ file, slotId, onFile, error }: PortraitUploadPr
                 e.stopPropagation();
                 clear();
               }}
-              className="absolute top-1.5 right-1.5 rounded-full bg-red-500 p-1 text-white shadow-lg transition-colors hover:bg-red-600"
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90 absolute top-1.5 right-1.5 rounded-full p-1 shadow-lg transition-colors"
             >
               <X className="h-3 w-3" />
             </button>
@@ -150,7 +153,7 @@ export function PortraitUpload({ file, slotId, onFile, error }: PortraitUploadPr
           <div className="flex h-full flex-col items-center justify-center gap-3 p-4">
             <svg
               viewBox="0 0 60 80"
-              className="w-14 text-slate-200"
+              className="text-muted-foreground/30 w-14"
               fill="currentColor"
               aria-hidden="true"
             >
@@ -158,8 +161,8 @@ export function PortraitUpload({ file, slotId, onFile, error }: PortraitUploadPr
               <ellipse cx="30" cy="62" rx="24" ry="18" />
             </svg>
             <div className="text-center">
-              <p className="text-[11px] font-medium text-slate-500">រូបថត ៤×៦</p>
-              <p className="text-[10px] text-slate-400">ចុច ឬ អូស</p>
+              <p className="text-muted-foreground text-[11px] font-medium">រូបថត ៤×៦</p>
+              <p className="text-muted-foreground/60 text-[10px]">ចុច ឬ អូស</p>
             </div>
           </div>
         )}
@@ -175,8 +178,8 @@ export function PortraitUpload({ file, slotId, onFile, error }: PortraitUploadPr
           }}
         />
       </div>
-      {error && <p className="text-xs text-red-500">{error}</p>}
-      <p className="text-[10px] text-slate-400">PNG / JPG · ≤ 5 MB</p>
+      {error && <p className="text-destructive text-xs">{error}</p>}
+      <p className="text-muted-foreground/60 text-[10px]">PNG / JPG · ≤ 5 MB</p>
     </div>
   );
 }
@@ -240,32 +243,32 @@ export function DocUploadSlot({
         }}
         className={[
           'relative flex min-h-27.5 cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed p-3',
-          'transition-all duration-200 focus:ring-2 focus:ring-indigo-400 focus:outline-none',
+          'focus:ring-primary/60 transition-all duration-200 focus:ring-2 focus:outline-none',
           error
-            ? 'border-red-300 bg-red-50'
+            ? 'border-destructive/40 bg-destructive/5'
             : file
-              ? 'border-emerald-400 bg-emerald-50'
-              : 'border-slate-200 bg-slate-50 hover:border-indigo-400 hover:bg-indigo-50',
+              ? 'border-chart-2/60 bg-chart-2/5'
+              : 'border-border bg-muted/50 hover:border-primary/40 hover:bg-primary/5',
         ].join(' ')}
       >
         {previewUrl && (
           <img src={previewUrl} alt={labelEn} className="mb-1 h-12 w-full rounded object-contain" />
         )}
         {file && !previewUrl ? (
-          <CheckCircle2 className="h-6 w-6 text-emerald-500" />
+          <CheckCircle2 className="text-chart-2 h-6 w-6" />
         ) : !previewUrl ? (
-          <Icon className="h-6 w-6 text-slate-400" />
+          <Icon className="text-muted-foreground h-6 w-6" />
         ) : null}
-        <p className="text-center text-[11px] leading-tight font-semibold text-slate-700">
+        <p className="text-foreground text-center text-[11px] leading-tight font-semibold">
           {label}
         </p>
-        <p className="text-center text-[10px] text-slate-400">{labelEn}</p>
+        <p className="text-muted-foreground/60 text-center text-[10px]">{labelEn}</p>
         {file ? (
-          <p className="max-w-full truncate px-2 text-center text-[10px] text-emerald-600">
+          <p className="text-chart-2 max-w-full truncate px-2 text-center text-[10px]">
             ✓ {file.name}
           </p>
         ) : (
-          <span className="flex items-center gap-1 text-[10px] text-slate-400">
+          <span className="text-muted-foreground/60 flex items-center gap-1 text-[10px]">
             <Upload className="h-3 w-3" /> ចុច ឬ អូស
           </span>
         )}
@@ -277,7 +280,7 @@ export function DocUploadSlot({
               e.stopPropagation();
               clear();
             }}
-            className="absolute top-1.5 right-1.5 rounded-full bg-red-100 p-0.5 text-red-500 hover:bg-red-200"
+            className="bg-destructive/10 text-destructive hover:bg-destructive/20 absolute top-1.5 right-1.5 rounded-full p-0.5"
           >
             <X className="h-3 w-3" />
           </button>
@@ -294,8 +297,10 @@ export function DocUploadSlot({
           }}
         />
       </div>
-      <p className="text-center font-mono text-[9px] text-slate-300 select-all">{slotId}</p>
-      {error && <p className="text-center text-xs text-red-500">{error}</p>}
+      <p className="text-muted-foreground/40 text-center font-mono text-[9px] select-all">
+        {slotId}
+      </p>
+      {error && <p className="text-destructive text-center text-xs">{error}</p>}
     </div>
   );
 }
@@ -401,7 +406,9 @@ export function PersonalInfoStep({ formData, setFields, errors, onNext, clearErr
 
       {/* ── Document selection (checkboxes) ─────────────────── */}
       <SectionCard title="ជ្រើសរើសឯកសារដែលមាន">
-        <p className="mb-3 text-xs text-slate-500">គូសលើឯកសារដែលអ្នកមាន រួចបញ្ចូលឯកសារខាងក្រោម</p>
+        <p className="text-muted-foreground mb-3 text-xs">
+          គូសលើឯកសារដែលអ្នកមាន រួចបញ្ចូលឯកសារខាងក្រោម
+        </p>
         <div className="grid grid-cols-2 gap-3">
           {VERIFY_DOCS.map((doc) => {
             // FIX: read from selectedDocKeys — NOT nationality
@@ -415,8 +422,8 @@ export function PersonalInfoStep({ formData, setFields, errors, onNext, clearErr
                 className={[
                   'flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 transition-colors',
                   isChecked
-                    ? 'border-indigo-400 bg-indigo-50'
-                    : 'border-slate-200 bg-slate-50 hover:border-indigo-300 hover:bg-indigo-50',
+                    ? 'border-primary/60 bg-primary/5'
+                    : 'border-border bg-muted/50 hover:border-primary/40 hover:bg-primary/5',
                 ].join(' ')}
               >
                 <Checkbox
@@ -436,10 +443,10 @@ export function PersonalInfoStep({ formData, setFields, errors, onNext, clearErr
                     sync({ selectedDocKeys: cleanNext.join(','), idDocType: firstIdType });
                   }}
                 />
-                <doc.Icon className="h-4 w-4 text-slate-500" />
+                <doc.Icon className="text-muted-foreground h-4 w-4" />
                 <div>
-                  <p className="text-sm font-medium text-slate-700">{doc.label}</p>
-                  <p className="text-[10px] text-slate-400">{doc.labelEn}</p>
+                  <p className="text-foreground text-sm font-medium">{doc.label}</p>
+                  <p className="text-muted-foreground/60 text-[10px]">{doc.labelEn}</p>
                 </div>
               </label>
             );
@@ -484,7 +491,7 @@ export function PersonalInfoStep({ formData, setFields, errors, onNext, clearErr
 
       {/* ── Role ───────────────────────────────────────────── */}
       <SectionCard title="តួនាទី">
-        {errors.role && <p className="mb-2 text-xs text-red-600">{errors.role}</p>}
+        {errors.role && <p className="text-destructive mb-2 text-xs">{errors.role}</p>}
         <Grid cols={2}>
           <Field label="តួនាទី (អ្នកដឹកនាំ)" error={errors.leaderRole}>
             <NativeSelect
@@ -500,20 +507,20 @@ export function PersonalInfoStep({ formData, setFields, errors, onNext, clearErr
               className={[
                 'flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-2.5 transition-colors',
                 isAthlete
-                  ? 'border-indigo-400 bg-indigo-50'
-                  : 'border-slate-200 bg-slate-50 hover:border-indigo-300 hover:bg-indigo-50',
+                  ? 'border-primary/60 bg-primary/5'
+                  : 'border-border bg-muted/50 hover:border-primary/40 hover:bg-primary/5',
               ].join(' ')}
             >
               <input
                 type="radio"
                 name="roleAthlete"
                 checked={isAthlete}
-                className="h-4 w-4 accent-indigo-600"
+                className="accent-primary h-4 w-4"
                 onChange={() => (isAthlete ? handleClearRole() : handleAthleteSelect())}
               />
               <div>
-                <p className="text-sm font-medium text-slate-800">ជាកីឡាករ / កីឡាការិនី</p>
-                <p className="text-xs text-slate-500">
+                <p className="text-foreground text-sm font-medium">ជាកីឡាករ / កីឡាការិនី</p>
+                <p className="text-muted-foreground text-xs">
                   {textDraft.gender
                     ? `ប្រភេទ: ${textDraft.gender === 'Male' ? 'ប្រុស' : 'ស្រី'}`
                     : 'ត្រូវគ្នានឹងភេទ'}
@@ -529,14 +536,14 @@ export function PersonalInfoStep({ formData, setFields, errors, onNext, clearErr
         {!photosLoaded ? (
           <div className="grid grid-cols-2 gap-5">
             {Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="h-30 animate-pulse rounded-xl bg-slate-100" />
+              <div key={i} className="bg-muted h-30 animate-pulse rounded-xl" />
             ))}
           </div>
         ) : (
           <div className="flex gap-5">
             <div className="flex shrink-0 flex-col items-center gap-1.5">
-              <p className="text-xs font-semibold text-slate-600">
-                រូបថត ៤×៦ <span className="text-red-500">*</span>
+              <p className="text-muted-foreground text-xs font-semibold">
+                រូបថត ៤×៦ <span className="text-destructive">*</span>
               </p>
               <PortraitUpload
                 file={photos.photoUpload}
@@ -554,17 +561,17 @@ export function PersonalInfoStep({ formData, setFields, errors, onNext, clearErr
               const selectedDocs = VERIFY_DOCS.filter((d) => selectedKeys.includes(d.key));
               if (selectedDocs.length === 0)
                 return (
-                  <div className="flex flex-1 items-center justify-center rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 p-6">
-                    <p className="text-center text-sm text-slate-400">
+                  <div className="border-border bg-muted/50 flex flex-1 items-center justify-center rounded-xl border-2 border-dashed p-6">
+                    <p className="text-muted-foreground text-center text-sm">
                       សូមគូសជ្រើសរើសឯកសារខាងលើជាមុនសិន
                     </p>
                   </div>
                 );
               return (
                 <div className="flex-1">
-                  <p className="mb-2 text-xs font-semibold text-slate-600">
+                  <p className="text-muted-foreground mb-2 text-xs font-semibold">
                     ឯកសារផ្ទៀងផ្ទាត់{' '}
-                    <span className="font-normal text-slate-400">
+                    <span className="text-muted-foreground/60 font-normal">
                       ({selectedDocs.length} ឯកសារ)
                     </span>
                   </p>

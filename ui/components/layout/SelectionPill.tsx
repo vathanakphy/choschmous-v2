@@ -30,20 +30,20 @@
 'use client';
 
 import { Check } from 'lucide-react';
-import { cn } from '@/lib/utils/cn';
+import { cn } from '@/lib/utils';
 
 const VARIANTS = {
   indigo: {
-    base:     'border-slate-200 bg-white text-slate-700 hover:border-indigo-300 hover:bg-indigo-50',
-    selected: 'border-indigo-500 bg-indigo-600 text-white',
+    base: 'border-border bg-card text-foreground hover:border-primary/40 hover:bg-primary/5',
+    selected: 'border-primary bg-primary text-primary-foreground',
   },
   purple: {
-    base:     'border-slate-200 bg-white text-slate-700 hover:border-purple-300 hover:bg-purple-50',
-    selected: 'border-purple-500 bg-purple-600 text-white',
+    base: 'border-border bg-card text-foreground hover:border-(--reg-purple-600)/40 hover:bg-(--reg-purple-50)',
+    selected: 'border-(--reg-purple-600) bg-(--reg-purple-600) text-primary-foreground',
   },
   emerald: {
-    base:     'border-slate-200 bg-white text-slate-700 hover:border-emerald-300 hover:bg-emerald-50',
-    selected: 'border-emerald-500 bg-emerald-600 text-white',
+    base: 'border-border bg-card text-foreground hover:border-(--reg-emerald-600)/40 hover:bg-(--reg-emerald-50)',
+    selected: 'border-(--reg-emerald-600) bg-(--reg-emerald-600) text-primary-foreground',
   },
 } as const;
 
@@ -58,9 +58,13 @@ export interface SelectionPillProps {
 }
 
 export function SelectionPill({
-  label, isSelected, onClick,
-  variant = 'indigo', size = 'default',
-  className, disabled,
+  label,
+  isSelected,
+  onClick,
+  variant = 'indigo',
+  size = 'default',
+  className,
+  disabled,
 }: SelectionPillProps) {
   const v = VARIANTS[variant];
   return (
@@ -73,7 +77,7 @@ export function SelectionPill({
         size === 'default' ? 'px-4 py-2.5 text-sm' : 'px-3 py-2 text-xs',
         isSelected ? v.selected : v.base,
         disabled && 'cursor-not-allowed opacity-50',
-        className,
+        className
       )}
     >
       <span>{label}</span>

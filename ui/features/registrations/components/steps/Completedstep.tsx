@@ -46,16 +46,16 @@ function SuccessHeader({
   return (
     <div className="space-y-4 py-8 text-center">
       <div className="flex justify-center">
-        <div className="flex h-24 w-24 items-center justify-center rounded-full bg-green-100">
-          <CheckCircle2 className="h-12 w-12 text-green-600" />
+        <div className="flex h-24 w-24 items-center justify-center rounded-full bg-(--reg-emerald-50)">
+          <CheckCircle2 className="text-chart-2 h-12 w-12" />
         </div>
       </div>
-      <h2 className="text-3xl font-bold text-green-700">បានចុះឈ្មោះដោយជោគជ័យ!</h2>
-      <p className="text-slate-600">
-        <span className="font-semibold text-slate-900">{displayName}</span> បានចុះឈ្មោះរួចរាល់
+      <h2 className="text-chart-2 text-3xl font-bold">បានចុះឈ្មោះដោយជោគជ័យ!</h2>
+      <p className="text-muted-foreground">
+        <span className="text-foreground font-semibold">{displayName}</span> បានចុះឈ្មោះរួចរាល់
       </p>
       {enrollId && (
-        <p className="text-sm text-slate-500">
+        <p className="text-muted-foreground text-sm">
           លេខសម្គាល់: <span className="font-mono font-semibold">#{enrollId}</span>
         </p>
       )}
@@ -71,28 +71,31 @@ function RegistrationSummary({
   displayName: string;
 }) {
   const pills: { icon: React.ReactNode; label: string }[] = [
-    { icon: <Medal className="h-3.5 w-3.5 text-emerald-600" />, label: formData.sportName || '—' },
     {
-      icon: <Hash className="h-3.5 w-3.5 text-emerald-600" />,
+      icon: <Medal className="h-3.5 w-3.5 text-(--reg-emerald-600)" />,
+      label: formData.sportName || '—',
+    },
+    {
+      icon: <Hash className="h-3.5 w-3.5 text-(--reg-emerald-600)" />,
       label: formData.categoryName || '—',
     },
     {
-      icon: <Building2 className="h-3.5 w-3.5 text-emerald-600" />,
+      icon: <Building2 className="h-3.5 w-3.5 text-(--reg-emerald-600)" />,
       label: formData.organizationName || '—',
     },
   ];
 
   return (
-    <div className="rounded-2xl border border-emerald-100 bg-emerald-50 p-5">
+    <div className="rounded-2xl border border-(--reg-emerald-100) bg-(--reg-emerald-50) p-5">
       <div className="mb-4 flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-(--reg-emerald-100) text-(--reg-emerald-700)">
           <Trophy className="h-5 w-5" />
         </div>
         <div>
-          <p className="text-xs font-semibold tracking-wide text-emerald-700 uppercase">
+          <p className="text-xs font-semibold tracking-wide text-(--reg-emerald-700) uppercase">
             សង្ខេបការចុះឈ្មោះ
           </p>
-          <p className="text-lg font-semibold text-slate-900">{displayName}</p>
+          <p className="text-foreground text-lg font-semibold">{displayName}</p>
         </div>
       </div>
 
@@ -100,7 +103,7 @@ function RegistrationSummary({
         {pills.map(({ icon, label }) => (
           <span
             key={label}
-            className="inline-flex items-center gap-1.5 rounded-full border border-emerald-100 bg-white/80 px-3 py-1.5 text-xs font-medium text-slate-700"
+            className="bg-card/80 text-foreground inline-flex items-center gap-1.5 rounded-full border border-(--reg-emerald-100) px-3 py-1.5 text-xs font-medium"
           >
             {icon}
             {label}
@@ -113,9 +116,9 @@ function RegistrationSummary({
 
 function AddMoreSection({ onAddMore }: { onAddMore: () => void }) {
   return (
-    <div className="space-y-4 rounded-xl border border-blue-200 bg-blue-50 p-6 text-center">
-      <h3 className="font-semibold text-slate-800">ចង់ចុះឈ្មោះអ្នកផ្សេងទៀតទេ?</h3>
-      <Button onClick={onAddMore} className="bg-blue-600 text-white hover:bg-blue-700" size="lg">
+    <div className="border-primary/20 bg-primary/5 space-y-4 rounded-xl border p-6 text-center">
+      <h3 className="text-foreground font-semibold">ចង់ចុះឈ្មោះអ្នកផ្សេងទៀតទេ?</h3>
+      <Button onClick={onAddMore} size="lg">
         <UserPlus className="h-5 w-5" />
         ចុះឈ្មោះអ្នកបន្ថែម
       </Button>

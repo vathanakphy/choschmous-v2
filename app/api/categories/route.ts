@@ -1,14 +1,6 @@
-// app/api/categories/route.ts
-// Proxies to FastAPI backend — no Prisma
-
 import { NextRequest } from 'next/server';
-import { ok, handleError } from '@/lib/api/response';
-
-const BACKEND_URL = (process.env.BACKEND_API_BASE_URL ?? 'http://127.0.0.1:8000').replace(
-  /\/$/,
-  ''
-);
-const API = `${BACKEND_URL}/api`;
+import { ok, created, handleError } from '@/lib/api/response';
+import { backendList, backendPost } from '@/lib/api/backend';
 
 function mapCategory(c: any) {
   return {
@@ -23,22 +15,39 @@ function mapCategory(c: any) {
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = req.nextUrl;
-    const sportId = searchParams.get('sport_id') ?? '';
+    const page = searchParams.get('page');
     const limit = searchParams.get('limit') ?? '100';
     const skip = searchParams.get('skip') ?? '0';
+    const search = searchParams.get('search') ?? '';
 
-    const params = new URLSearchParams({ skip, limit });
-    if (sportId) params.set('sport_id', sportId);
-
-    const res = await fetch(`${API}/org-sports/categories/?${params}`);
-    if (!res.ok) {
-      const body = await res.json().catch(() => ({}));
-      throw new Error(`Backend ${res.status}: ${JSON.stringify(body)}`);
+    let computedSkip = skip;
+    if (page) {
+      computedSkip = String((Number(page) - 1) * Number(limit));
     }
 
-    const json = await res.json();
-    const data = (json.data ?? []).map(mapCategory);
+    const json = await backendList<any>(
+      '/org-sports/categories/',
+      Number(limit),
+      Number(computedSkip)
+    );
+    let data = (json.data ?? []).map(mapCategory);
+
+    if (search) {
+      const q = search.toLowerCase();
+      data = data.filter((c) => c.name.toLowerCase().includes(q));
+    }
+
     return ok(data, { total: json.count ?? data.length });
+  } catch (e) {
+    return handleError(e);
+  }
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const raw = await backendPost<any>('/org-sports/categories', body);
+    return created(mapCategory(raw));
   } catch (e) {
     return handleError(e);
   }

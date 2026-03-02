@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { cn } from '@/lib/utils/cn';
+import { cn } from '@/lib/utils';
 
 interface DropdownProps {
   trigger: React.ReactNode;
@@ -19,7 +19,7 @@ export function Dropdown({ trigger, children, className }: DropdownProps) {
       {open && (
         <div
           className={cn(
-            'bg-background absolute right-0 z-50 mt-3 flex w-52 flex-col gap-3 rounded-xl border p-4 shadow-lg',
+            'bg-card absolute right-0 z-50 mt-3 flex w-52 flex-col gap-3 rounded-2xl border p-4 shadow-lg',
             className
           )}
         >

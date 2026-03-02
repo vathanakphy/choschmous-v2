@@ -29,7 +29,7 @@
 
 import * as React from 'react';
 import { Edit2 } from 'lucide-react';
-import { cn } from '@/lib/utils/cn';
+import { cn } from '@/lib/utils';
 import { Button } from '@/ui/design-system/primitives/Button';
 
 // ── SectionCard ───────────────────────────────────────────────
@@ -37,22 +37,30 @@ import { Button } from '@/ui/design-system/primitives/Button';
 interface SectionCardProps {
   title?: string;
   subtitle?: string;
-  headerSlot?: React.ReactNode;   // e.g. a badge or action button top-right
+  headerSlot?: React.ReactNode; // e.g. a badge or action button top-right
   children: React.ReactNode;
   className?: string;
 }
 
-export function SectionCard({ title, subtitle, headerSlot, children, className }: SectionCardProps) {
+export function SectionCard({
+  title,
+  subtitle,
+  headerSlot,
+  children,
+  className,
+}: SectionCardProps) {
   return (
-    <div className={cn(
-      'space-y-4 rounded-2xl border border-slate-200 bg-white/60 p-5 shadow-sm sm:p-6',
-      className,
-    )}>
+    <div
+      className={cn(
+        'border-border bg-card/60 space-y-4 rounded-2xl border p-5 shadow-sm sm:p-6',
+        className
+      )}
+    >
       {(title || subtitle || headerSlot) && (
         <div className="flex items-start justify-between gap-2">
           <div className="space-y-0.5">
-            {title    && <p className="text-sm font-semibold text-slate-800">{title}</p>}
-            {subtitle && <p className="text-sm text-slate-500">{subtitle}</p>}
+            {title && <p className="text-foreground text-sm font-semibold">{title}</p>}
+            {subtitle && <p className="text-muted-foreground text-sm">{subtitle}</p>}
           </div>
           {headerSlot}
         </div>
@@ -73,8 +81,8 @@ interface StepHeaderProps {
 export function StepHeader({ title, subtitle, className }: StepHeaderProps) {
   return (
     <div className={cn('mb-6', className)}>
-      <h2 className="text-xl font-bold text-slate-900">{title}</h2>
-      {subtitle && <p className="mt-1 text-sm text-slate-500">{subtitle}</p>}
+      <h2 className="text-foreground text-xl font-bold">{title}</h2>
+      {subtitle && <p className="text-muted-foreground mt-1 text-sm">{subtitle}</p>}
     </div>
   );
 }
@@ -90,17 +98,19 @@ interface InfoRowProps {
 
 export function InfoRow({ label, value, onEdit, className }: InfoRowProps) {
   return (
-    <div className={cn(
-      'flex items-center justify-between border-b border-slate-100 py-2.5 text-sm last:border-0',
-      className,
-    )}>
-      <span className="w-36 shrink-0 text-slate-500">{label}</span>
-      <span className="flex-1 text-right font-medium text-slate-900">{value || '—'}</span>
+    <div
+      className={cn(
+        'border-border flex items-center justify-between border-b py-2.5 text-sm last:border-0',
+        className
+      )}
+    >
+      <span className="text-muted-foreground w-36 shrink-0">{label}</span>
+      <span className="text-foreground flex-1 text-right font-medium">{value || '—'}</span>
       {onEdit && (
         <button
           type="button"
           onClick={onEdit}
-          className="ml-3 shrink-0 text-indigo-400 transition hover:text-indigo-700"
+          className="text-primary/60 hover:text-primary ml-3 shrink-0 transition"
           aria-label={`Edit ${label}`}
         >
           <Edit2 className="h-3.5 w-3.5" />
@@ -124,23 +134,33 @@ interface ActionFooterProps {
 }
 
 export function ActionFooter({
-  onBack, onNext,
-  backLabel = 'ត្រលប់', nextLabel = 'បន្ត',
-  nextDisabled, loading, showBack = true, className,
+  onBack,
+  onNext,
+  backLabel = 'ត្រលប់',
+  nextLabel = 'បន្ត',
+  nextDisabled,
+  loading,
+  showBack = true,
+  className,
 }: ActionFooterProps) {
   return (
     <div className={cn('flex items-center justify-between gap-4', className)}>
-      {showBack && onBack
-        ? <Button variant="outline" type="button" onClick={onBack}>{backLabel}</Button>
-        : <div />
-      }
+      {showBack && onBack ? (
+        <Button variant="outline" type="button" onClick={onBack}>
+          {backLabel}
+        </Button>
+      ) : (
+        <div />
+      )}
       {onNext && (
-        <Button type="button" onClick={onNext} disabled={nextDisabled || loading}
-          className="rounded-full px-8">
-          {loading
-            ? <span className="flex items-center gap-2"><span className="animate-spin">⏳</span>កំពុង...</span>
-            : nextLabel
-          }
+        <Button type="button" onClick={onNext} disabled={nextDisabled || loading} className="px-8">
+          {loading ? (
+            <span className="flex items-center gap-2">
+              <span className="animate-spin">⏳</span>កំពុង...
+            </span>
+          ) : (
+            nextLabel
+          )}
         </Button>
       )}
     </div>
@@ -164,9 +184,5 @@ interface GridProps {
 }
 
 export function Grid({ children, cols = 2, gap = 4, className }: GridProps) {
-  return (
-    <div className={cn('grid', COLS[cols], `gap-${gap}`, className)}>
-      {children}
-    </div>
-  );
+  return <div className={cn('grid', COLS[cols], `gap-${gap}`, className)}>{children}</div>;
 }

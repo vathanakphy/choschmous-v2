@@ -1,5 +1,5 @@
-import { DashboardOverview } from '@/ui/features/dashboard/components/DashboardOverview';
+import { DashboardPage } from '@/ui/features/dashboard/components/DashboardPage';
 
 export default function AdminDashboardPage() {
-  return <DashboardOverview role="admin" />;
+  return <DashboardPage role="admin" />;
 }

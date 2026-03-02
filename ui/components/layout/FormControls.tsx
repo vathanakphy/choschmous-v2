@@ -20,7 +20,7 @@
  */
 
 import * as React from 'react';
-import { cn } from '@/lib/utils/cn';
+import { cn } from '@/lib/utils';
 
 // ── FieldError ────────────────────────────────────────────────
 
@@ -32,7 +32,7 @@ interface FieldErrorProps {
 export function FieldError({ message, className }: FieldErrorProps) {
   if (!message) return null;
   return (
-    <p className={cn('mt-1 text-xs text-red-600', className)} role="alert">
+    <p className={cn('text-destructive mt-1 text-xs', className)} role="alert">
       {message}
     </p>
   );
@@ -53,10 +53,14 @@ export function Field({ label, error, required, hint, children, className }: Fie
   return (
     <div className={cn('space-y-1.5', className)}>
       {label && (
-        <label className="text-sm font-medium text-slate-700">
+        <label className="text-foreground text-sm font-medium">
           {label}
-          {required && <span className="ml-1 text-red-500" aria-hidden>*</span>}
-          {hint && <span className="ml-2 text-xs font-normal text-slate-400">{hint}</span>}
+          {required && (
+            <span className="text-destructive ml-1" aria-hidden>
+              *
+            </span>
+          )}
+          {hint && <span className="text-muted-foreground ml-2 text-xs font-normal">{hint}</span>}
         </label>
       )}
       {children}
@@ -78,7 +82,13 @@ interface NativeSelectProps {
 }
 
 export function NativeSelect({
-  value, onChange, options, placeholder, disabled, error, className,
+  value,
+  onChange,
+  options,
+  placeholder,
+  disabled,
+  error,
+  className,
 }: NativeSelectProps) {
   return (
     <select
@@ -86,17 +96,19 @@ export function NativeSelect({
       disabled={disabled}
       onChange={(e) => onChange(e.target.value)}
       className={cn(
-        'h-10 w-full rounded-md border border-input bg-background px-3 text-sm transition-colors',
-        'focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1',
+        'border-input bg-background h-10 w-full rounded-lg border px-3 text-sm shadow-xs transition-colors',
+        'focus:ring-ring focus:ring-2 focus:ring-offset-2 focus:outline-none',
         'disabled:cursor-not-allowed disabled:opacity-50',
         !value && 'text-muted-foreground',
-        error && 'border-red-500 focus:ring-red-300',
-        className,
+        error && 'border-destructive focus:ring-destructive/30',
+        className
       )}
     >
       {placeholder && <option value="">{placeholder}</option>}
       {options.map((o) => (
-        <option key={o.value} value={o.value}>{o.label}</option>
+        <option key={o.value} value={o.value}>
+          {o.label}
+        </option>
       ))}
     </select>
   );

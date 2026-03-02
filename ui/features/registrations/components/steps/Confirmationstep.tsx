@@ -57,7 +57,7 @@ function IDCardPreview({
       {/* Edit button */}
       <button
         onClick={onEdit}
-        className="absolute -top-2 -right-2 z-10 flex items-center gap-1 rounded-full border border-slate-200 bg-white px-2 py-1 text-xs text-slate-500 shadow-sm transition-colors hover:border-indigo-300 hover:text-indigo-600"
+        className="border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-primary absolute -top-2 -right-2 z-10 flex items-center gap-1 rounded-full border px-2 py-1 text-xs shadow-sm transition-colors"
       >
         <Edit2 className="h-3 w-3" />
         Edit
@@ -90,13 +90,13 @@ function IDCardPreview({
         <div className="flex gap-3 p-3">
           {/* Photo */}
           <div
-            className="flex shrink-0 items-center justify-center overflow-hidden rounded-md border-2 border-slate-200 bg-slate-100"
+            className="border-border bg-muted flex shrink-0 items-center justify-center overflow-hidden rounded-md border-2"
             style={{ width: 70, height: 88 }}
           >
             {photoUrl ? (
               <img src={photoUrl} alt="profile" className="h-full w-full object-cover" />
             ) : (
-              <div className="flex flex-col items-center gap-1 text-slate-300">
+              <div className="text-muted-foreground/30 flex flex-col items-center gap-1">
                 <svg viewBox="0 0 24 24" className="h-8 w-8 fill-current">
                   <circle cx="12" cy="8" r="4" />
                   <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
@@ -109,11 +109,11 @@ function IDCardPreview({
           {/* Info */}
           <div className="min-w-0 flex-1">
             {/* Name in Khmer */}
-            <p className="truncate text-[11px] leading-tight font-bold text-slate-800">
+            <p className="text-foreground truncate text-[11px] leading-tight font-bold">
               {fullKhmer}
             </p>
             {/* Name in Latin */}
-            <p className="mb-2 truncate text-[10px] text-slate-500">{fullLatin}</p>
+            <p className="text-muted-foreground mb-2 truncate text-[10px]">{fullLatin}</p>
 
             {/* Role badge */}
             <div
@@ -139,19 +139,19 @@ function IDCardPreview({
         </div>
 
         {/* Divider */}
-        <div className="mx-3 border-t border-dashed border-slate-200" />
+        <div className="border-border mx-3 border-t border-dashed" />
 
         {/* QR + event */}
         <div className="flex items-center justify-between px-3 py-2">
           {/* QR placeholder */}
-          <div className="rounded border border-slate-200 bg-slate-50 p-1">
-            <QrCode className="h-8 w-8 text-slate-400" />
+          <div className="border-border bg-muted/50 rounded border p-1">
+            <QrCode className="text-muted-foreground/60 h-8 w-8" />
           </div>
           <div className="text-right">
-            <p className="text-[8px] tracking-wider text-slate-400 uppercase">
+            <p className="text-muted-foreground/60 text-[8px] tracking-wider uppercase">
               {formData.eventName || '—'}
             </p>
-            <p className="text-[8px] text-slate-400">{formData.categoryName || '—'}</p>
+            <p className="text-muted-foreground/60 text-[8px]">{formData.categoryName || '—'}</p>
           </div>
         </div>
 
@@ -164,7 +164,9 @@ function IDCardPreview({
         </div>
       </div>
 
-      <p className="mt-2 text-center text-[10px] text-slate-400">Card preview (A6 format)</p>
+      <p className="text-muted-foreground/60 mt-2 text-center text-[10px]">
+        Card preview (A6 format)
+      </p>
     </div>
   );
 }
@@ -174,8 +176,8 @@ function IDCardPreview({
 function InfoChip({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center gap-1">
-      <span className="w-10 shrink-0 text-[8px] text-slate-400">{label}</span>
-      <span className="truncate text-[9px] font-medium text-slate-700">{value}</span>
+      <span className="text-muted-foreground/60 w-10 shrink-0 text-[8px]">{label}</span>
+      <span className="text-foreground truncate text-[9px] font-medium">{value}</span>
     </div>
   );
 }
@@ -247,33 +249,33 @@ export function ConfirmationStep({ formData, onEdit, onSuccess }: ConfirmationSt
           <SectionCard title="ឈ្មោះ / Name">
             <div className="grid grid-cols-2 gap-x-6">
               <div>
-                <p className="mb-0.5 text-xs text-slate-400">នាមខ្លួន (ខ្មែរ)</p>
-                <p className="text-sm font-medium text-slate-800">
+                <p className="text-muted-foreground/60 mb-0.5 text-xs">នាមខ្លួន (ខ្មែរ)</p>
+                <p className="text-foreground text-sm font-medium">
                   {formData.firstNameKhmer || '—'}
                 </p>
               </div>
               <div>
-                <p className="mb-0.5 text-xs text-slate-400">First Name</p>
-                <p className="text-sm font-medium text-slate-800">
+                <p className="text-muted-foreground/60 mb-0.5 text-xs">First Name</p>
+                <p className="text-foreground text-sm font-medium">
                   {formData.firstNameLatin || '—'}
                 </p>
               </div>
               <div className="mt-2">
-                <p className="mb-0.5 text-xs text-slate-400">នាមត្រកូល (ខ្មែរ)</p>
-                <p className="text-sm font-medium text-slate-800">
+                <p className="text-muted-foreground/60 mb-0.5 text-xs">នាមត្រកូល (ខ្មែរ)</p>
+                <p className="text-foreground text-sm font-medium">
                   {formData.lastNameKhmer || '—'}
                 </p>
               </div>
               <div className="mt-2">
-                <p className="mb-0.5 text-xs text-slate-400">Last Name</p>
-                <p className="text-sm font-medium text-slate-800">
+                <p className="text-muted-foreground/60 mb-0.5 text-xs">Last Name</p>
+                <p className="text-foreground text-sm font-medium">
                   {formData.lastNameLatin || '—'}
                 </p>
               </div>
             </div>
             <button
               onClick={() => onEdit(4)}
-              className="mt-2 flex items-center gap-1 text-xs text-indigo-500 hover:underline"
+              className="text-primary mt-2 flex items-center gap-1 text-xs hover:underline"
             >
               <Edit2 className="h-3 w-3" /> Edit name
             </button>
@@ -340,7 +342,7 @@ export function ConfirmationStep({ formData, onEdit, onSuccess }: ConfirmationSt
 
         {/* ─── Right: ID Card Preview ────────────────────── */}
         <div className="flex flex-col items-center pt-2 lg:w-72">
-          <p className="mb-4 text-xs font-semibold tracking-wider text-slate-500 uppercase">
+          <p className="text-muted-foreground mb-4 text-xs font-semibold tracking-wider uppercase">
             Card Preview
           </p>
           <IDCardPreview formData={formData} onEdit={() => onEdit(4)} />
@@ -348,7 +350,7 @@ export function ConfirmationStep({ formData, onEdit, onSuccess }: ConfirmationSt
       </div>
 
       {error && (
-        <p className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+        <p className="border-destructive/20 bg-destructive/5 text-destructive rounded-lg border p-3 text-sm">
           {error}
         </p>
       )}

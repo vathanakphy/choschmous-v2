@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/utils/cn';
+import { cn } from '@/lib/utils';
 import { CheckCircle2 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 

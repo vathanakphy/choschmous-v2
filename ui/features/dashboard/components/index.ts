@@ -1,0 +1,12 @@
+export { DashboardPage } from './DashboardPage';
+export { DashboardOverview } from './DashboardOverview';
+export { HeroBanner } from './HeroBanner';
+export { StatsSection } from './StatsSection';
+export { EventsPanel } from './EventsPanel';
+export { SportsPanel } from './SportsPanel';
+export { OrganizationsPanel } from './OrganizationsPanel';
+export { RecentEnrollments } from './RecentEnrollments';
+export { GenderChart } from './GenderChart';
+export { QuickActionsPanel } from './QuickActionsPanel';
+export { PortalModules } from './PortalModules';
+export { DashboardSkeleton } from './DashboardSkeleton';
