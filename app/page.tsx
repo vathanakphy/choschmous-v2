@@ -1,22 +1,21 @@
-import Link from 'next/link';
-import { ROUTES } from '@/config/routes';
-import { Button } from '@/ui/design-system/primitives/Button';
+import Navbar from '@/ui/components/landing/Navbar';
+import HeroSection from '@/ui/components/landing/HeroSection';
+import FeaturesSection from '@/ui/components/landing/FeaturesSection';
+import HowItWorksSection from '@/ui/components/landing/HowItWorksSection';
+import StatsSection from '@/ui/components/landing/StatsSection';
+import Footer from '@/ui/components/landing/Footer';
 
 export default function HomePage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-6 p-8">
-      <div className="text-center">
-        <h1 className="text-5xl font-bold tracking-tight">Choschmous</h1>
-        <p className="text-muted-foreground mt-3 text-lg">Sports Registration Management System</p>
-      </div>
-      <div className="flex gap-3">
-        <Button asChild>
-          <Link href={ROUTES.AUTH.LOGIN}>Login</Link>
-        </Button>
-        <Button variant="outline" asChild>
-          <Link href={ROUTES.PUBLIC.SURVEY}>Survey</Link>
-        </Button>
-      </div>
-    </main>
+    <div className="flex min-h-screen flex-col">
+      <Navbar />
+      <main className="flex-1">
+        <HeroSection />
+        <FeaturesSection />
+        <HowItWorksSection />
+        <StatsSection />
+      </main>
+      <Footer />
+    </div>
   );
 }
