@@ -17,6 +17,8 @@ import {
   Link2,
   Grid3X3,
   UserCog,
+  Hash,
+  Swords,
 } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
 import { ROUTES } from '@/config/routes';
@@ -38,6 +40,16 @@ const ADMIN_NAV: NavItem[] = [
   { label: 'អ្នកចូលរួម', icon: <Users className="h-5 w-5" />, href: ROUTES.ADMIN.PARTICIPANTS },
   { label: 'ខេត្ត', icon: <MapPin className="h-5 w-5" />, href: ROUTES.ADMIN.PROVINCES },
   { label: 'ស្ទង់មតិ', icon: <ClipboardList className="h-5 w-5" />, href: ROUTES.ADMIN.SURVEY },
+  {
+    label: 'បញ្ជីចំនួនប្រតិភូ',
+    icon: <Hash className="h-5 w-5" />,
+    href: ROUTES.ADMIN.PARTICIPATION_NUMBER,
+  },
+  {
+    label: 'បញ្ជីកីឡាប្រកួត',
+    icon: <Swords className="h-5 w-5" />,
+    href: ROUTES.ADMIN.PARTICIPATION_SPORT,
+  },
 ];
 
 const SUPERADMIN_NAV: NavItem[] = [
@@ -84,6 +96,16 @@ const SUPERADMIN_NAV: NavItem[] = [
     label: 'ស្ទង់មតិ',
     icon: <ClipboardList className="h-5 w-5" />,
     href: ROUTES.SUPERADMIN.SURVEY,
+  },
+  {
+    label: 'បញ្ជីចំនួនប្រតិភូ',
+    icon: <Hash className="h-5 w-5" />,
+    href: ROUTES.SUPERADMIN.PARTICIPATION_NUMBER,
+  },
+  {
+    label: 'បញ្ជីកីឡាប្រកួត',
+    icon: <Swords className="h-5 w-5" />,
+    href: ROUTES.SUPERADMIN.PARTICIPATION_SPORT,
   },
 ];
 

@@ -14,13 +14,13 @@ const nextConfig: NextConfig = {
     if (!backendApiBaseUrl) return [];
     return {
       beforeFiles: [],
-      afterFiles: [
+      afterFiles: [],
+      fallback: [
         {
           source: '/api/:path*',
-          destination: `${backendApiBaseUrl}/api/:path*`,
+          destination: `${backendApiBaseUrl}/api/:path*`, 
         },
       ],
-      fallback: [],
     };
   },
 };

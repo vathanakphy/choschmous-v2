@@ -79,10 +79,10 @@ function IDCardPreview({
           style={{ background: 'linear-gradient(135deg, #1a3a8c 0%, #1565c0 100%)' }}
         >
           <p className="text-[9px] font-bold tracking-wide text-white opacity-90">
-            គីឡូសាប្រចាំជាតិ ២០២៦
+            ការប្រកួតកីឡា...​ ឆ្នាំ២០២៦
           </p>
           <p className="text-[8px] tracking-widest text-blue-200 uppercase">
-            NATIONAL PRIMARY SCHOOL GAMES 2026
+            Event... 2026
           </p>
         </div>
 

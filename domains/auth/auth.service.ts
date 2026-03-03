@@ -1,7 +1,4 @@
-// ============================================================
 // domains/auth/auth.service.ts
-// ============================================================
-
 import { AuthRepository } from './auth.repository';
 import type { LoginInput, AuthUser } from './auth.types';
 import { loginSchema } from './auth.validators';
@@ -9,7 +6,7 @@ import { UnauthorizedError } from '@/lib/api/errors';
 import { backendRoleToFrontendRole } from './auth.types';
 
 export class AuthService {
-  constructor(private repo: AuthRepository) {}
+  constructor(private repo: AuthRepository) { }
 
   async login(input: LoginInput): Promise<AuthUser> {
     const parsed = loginSchema.parse(input);
@@ -17,7 +14,9 @@ export class AuthService {
     let result;
     try {
       result = await this.repo.login(parsed);
-    } catch {
+    } catch (err) {
+      // FIX: Log the real error for debugging — swallowing it made failures invisible
+      console.error('[AuthService.login]', err);
       throw new UnauthorizedError();
     }
 

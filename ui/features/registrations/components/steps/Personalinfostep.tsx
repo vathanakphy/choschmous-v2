@@ -373,21 +373,7 @@ export function PersonalInfoStep({ formData, setFields, errors, onNext, clearErr
       {/* ── Names ──────────────────────────────────────────── */}
       <SectionCard title="ឈ្មោះ">
         <Grid cols={2}>
-          <Field label="នាម (ខ្មែរ)" error={errors.firstNameKhmer}>
-            <Input
-              placeholder="នាម"
-              value={textDraft.firstNameKhmer}
-              onChange={(e) => sync({ firstNameKhmer: e.target.value })}
-            />
-          </Field>
-          <Field label="នាម (ឡាតាំង)" error={errors.firstNameLatin}>
-            <Input
-              placeholder="First name"
-              value={textDraft.firstNameLatin}
-              onChange={(e) => sync({ firstNameLatin: e.target.value })}
-            />
-          </Field>
-          <Field label="គោត្តនាម (ខ្មែរ)" error={errors.lastNameKhmer}>
+          <Field label="គោត្តនាម" error={errors.lastNameKhmer}>
             <Input
               placeholder="គោត្តនាម"
               value={textDraft.lastNameKhmer}
@@ -396,14 +382,64 @@ export function PersonalInfoStep({ formData, setFields, errors, onNext, clearErr
           </Field>
           <Field label="គោត្តនាម (ឡាតាំង)" error={errors.lastNameLatin}>
             <Input
-              placeholder="Last name"
+              placeholder="Family name"
               value={textDraft.lastNameLatin}
               onChange={(e) => sync({ lastNameLatin: e.target.value })}
+            />
+          </Field>
+          <Field label="នាម" error={errors.firstNameKhmer}>
+            <Input
+              placeholder="នាម"
+              value={textDraft.firstNameKhmer}
+              onChange={(e) => sync({ firstNameKhmer: e.target.value })}
+            />
+          </Field>
+          <Field label="នាម (ឡាតាំង)" error={errors.firstNameLatin}>
+            <Input
+              placeholder="Given name"
+              value={textDraft.firstNameLatin}
+              onChange={(e) => sync({ firstNameLatin: e.target.value })}
             />
           </Field>
         </Grid>
       </SectionCard>
 
+
+      {/* ── Contact & DOB ──────────────────────────────────── */}
+      <SectionCard title="កំណើត និង ទំនាក់ទំនង">
+        <Grid cols={2}>
+          <Field label="ភេទ" error={errors.gender}>
+            <NativeSelect
+              value={textDraft.gender}
+              onChange={handleGenderChange}
+              options={GENDER_OPTIONS}
+              placeholder="ជ្រើសភេទ"
+            />
+          </Field>
+          <Field label="ថ្ងៃ ខែ ឆ្នាំកំណើត" error={errors.dateOfBirth}>
+            <Input
+              type="date"
+              value={textDraft.dateOfBirth}
+              onChange={(e) => sync({ dateOfBirth: e.target.value })}
+            />
+          </Field>
+          <Field label="លេខអត្តសញ្ញាណ" error={errors.nationalID}>
+            <Input
+              placeholder="xxxxxxxxxxxxxx"
+              value={textDraft.nationalID}
+              onChange={(e) => sync({ nationalID: e.target.value })}
+            />
+          </Field>
+          <Field label="ទូរស័ព្ទ" error={errors.phone}>
+            <Input
+              placeholder="0xx xxx xxx"
+              value={textDraft.phone}
+              onChange={(e) => sync({ phone: e.target.value })}
+            />
+          </Field>
+        </Grid>
+      </SectionCard>
+      
       {/* ── Document selection (checkboxes) ─────────────────── */}
       <SectionCard title="ជ្រើសរើសឯកសារដែលមាន">
         <p className="text-muted-foreground mb-3 text-xs">
@@ -452,41 +488,6 @@ export function PersonalInfoStep({ formData, setFields, errors, onNext, clearErr
             );
           })}
         </div>
-      </SectionCard>
-
-      {/* ── Contact & DOB ──────────────────────────────────── */}
-      <SectionCard title="កំណើត និង ទំនាក់ទំនង">
-        <Grid cols={2}>
-          <Field label="ភេទ" error={errors.gender}>
-            <NativeSelect
-              value={textDraft.gender}
-              onChange={handleGenderChange}
-              options={GENDER_OPTIONS}
-              placeholder="ជ្រើសភេទ"
-            />
-          </Field>
-          <Field label="ថ្ងៃ ខែ ឆ្នាំកំណើត" error={errors.dateOfBirth}>
-            <Input
-              type="date"
-              value={textDraft.dateOfBirth}
-              onChange={(e) => sync({ dateOfBirth: e.target.value })}
-            />
-          </Field>
-          <Field label="លេខអត្តសញ្ញាណ" error={errors.nationalID}>
-            <Input
-              placeholder="xxxxxxxxxxxxxx"
-              value={textDraft.nationalID}
-              onChange={(e) => sync({ nationalID: e.target.value })}
-            />
-          </Field>
-          <Field label="ទូរស័ព្ទ" error={errors.phone}>
-            <Input
-              placeholder="0xx xxx xxx"
-              value={textDraft.phone}
-              onChange={(e) => sync({ phone: e.target.value })}
-            />
-          </Field>
-        </Grid>
       </SectionCard>
 
       {/* ── Role ───────────────────────────────────────────── */}

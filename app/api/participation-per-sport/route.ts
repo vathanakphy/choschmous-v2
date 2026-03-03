@@ -1,39 +1,30 @@
-import { backendList } from '@/lib/api/backend';
-import { ok, handleError } from '@/lib/api/response';
 import { NextRequest } from 'next/server';
+import { ParticipationStatsService, ParticipationStatsRepository } from '@/domains/participation-stats';
+import { ok, created, handleError } from '@/lib/api/response';
 
-type PPS = {
-  id: number;
-  sports_Events_id: number | null;
-  female_count: number;
-  male_count: number;
-  created_at: string;
-};
-
-function map(r: PPS) {
-  return {
-    id: r.id,
-    sportsEventsId: r.sports_Events_id,
-    femaleCount: r.female_count,
-    maleCount: r.male_count,
-    createdAt: r.created_at,
-  };
-}
+const service = new ParticipationStatsService(new ParticipationStatsRepository());
 
 export async function GET(req: NextRequest) {
   try {
     const sp = req.nextUrl.searchParams;
     const page = Math.max(1, Number(sp.get('page') ?? 1));
-    const pageSize = Math.min(200, Number(sp.get('pageSize') ?? 100));
-    const skip = (page - 1) * pageSize;
+    const pageSize = Math.min(500, Number(sp.get('pageSize') ?? 100));
+    const result = await service.listParticipationPerSport({ page, pageSize });
+    return ok(result.data, result.meta);
+  } catch (e) {
+    return handleError(e);
+  }
+}
 
-    const { data = [], count = 0 } = await backendList<PPS>(
-      '/participation-per-sport/',
-      pageSize,
-      skip
-    );
-
-    return ok(data.map(map), { total: count, page, pageSize });
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const row = await service.createParticipationPerSport({
+      sportsEventsId: body.sportsEventsId ?? body.sports_Events_id ?? null,
+      femaleCount: body.femaleCount ?? body.female_count ?? 0,
+      maleCount: body.maleCount ?? body.male_count ?? 0,
+    });
+    return created(row);
   } catch (e) {
     return handleError(e);
   }

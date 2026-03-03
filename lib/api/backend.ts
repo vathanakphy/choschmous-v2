@@ -13,7 +13,7 @@ export type ListResponse<T> = { data?: T[]; count?: number };
 
 export async function backendFetch<T>(path: string, init?: RequestInit): Promise<T> {
   const url = path.startsWith('http') ? path : `${API}${path}`;
-  const res = await fetch(url, { cache: 'no-store', ...init });
+  const res = await fetch(url, { cache: 'no-store', signal: AbortSignal.timeout(30000), ...init });
   if (!res.ok) {
     const body = await res.text().catch(() => '');
     throw new Error(`Backend ${res.status}: ${body}`);

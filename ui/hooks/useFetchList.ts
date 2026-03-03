@@ -1,23 +1,19 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-/**
- * Generic hook for fetching a list from an API endpoint.
- *
- * Handles loading, error, and abort-on-unmount automatically.
- *
- * @example
- * const { data: events, loading, error } = useFetchList('/api/events?limit=100', mapEvent);
- */
 export function useFetchList<T>(
   url: string | null,
-  mapFn: (raw: any) => T,
-  deps: any[] = []
+  mapFn: (raw: unknown) => T,
 ): { data: T[]; loading: boolean; error: string | null } {
   const [data, setData] = useState<T[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!!url);
   const [error, setError] = useState<string | null>(null);
+
+  const mapFnRef = useRef(mapFn);
+  useEffect(() => {
+    mapFnRef.current = mapFn;
+  }, [mapFn]);
 
   useEffect(() => {
     if (!url) {
@@ -29,23 +25,33 @@ export function useFetchList<T>(
     setError(null);
     const controller = new AbortController();
 
-    fetch(url, { signal: controller.signal })
+    fetch(url, {
+      signal: controller.signal,
+      credentials: 'include',
+    })
       .then((r) => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
         return r.json();
       })
-      .then((json) => {
-        const raw: any[] = Array.isArray(json?.data) ? json.data : Array.isArray(json) ? json : [];
-        setData(raw.map(mapFn));
+      .then((json: unknown) => {
+        const raw = Array.isArray((json as { data?: unknown })?.data)
+          ? (json as { data: unknown[] }).data
+          : Array.isArray(json)
+            ? (json as unknown[])
+            : [];
+        try {
+          setData(raw.map((item) => mapFnRef.current(item)));
+        } catch {
+          setError('មិនអាចដំណើរការទិន្នន័យបាន');
+        }
       })
-      .catch((err) => {
+      .catch((err: Error) => {
         if (err.name !== 'AbortError') setError('មិនអាចទាញទិន្នន័យបាន');
       })
       .finally(() => setLoading(false));
 
     return () => controller.abort();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [url, ...deps]);
+  }, [url]);
 
   return { data, loading, error };
 }

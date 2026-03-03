@@ -25,6 +25,8 @@ export const ROUTES = {
     PARTICIPANTS: '/admin/participants',
     PROVINCES: '/admin/provinces',
     SURVEY: '/admin/survey',
+    PARTICIPATION_NUMBER: '/admin/participation/number',
+    PARTICIPATION_SPORT: '/admin/participation/sport',
   },
   SUPERADMIN: {
     ROOT: '/superadmin',
@@ -44,6 +46,8 @@ export const ROUTES = {
     ASSIGNMENTS: '/superadmin/assignments',
     SESSIONS: '/superadmin/sessions',
     DASHBOARD: '/superadmin/dashboard',
+    PARTICIPATION_NUMBER: '/superadmin/participation/number',
+    PARTICIPATION_SPORT: '/superadmin/participation/sport',
   },
   API: {
     LOGIN: '/api/auth/login',

@@ -1,22 +1,20 @@
+// ui/hooks/usePagedList.ts
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { ApiResponse } from '@/types/api';
 
-/**
- * Generic hook for client-side paginated list with search.
- *
- * Calls Next.js API routes (which proxy to FastAPI).
- * Expects the API to return `{ success: true, data: T[], meta?: { total } }`.
- *
- * @example
- * const list = usePagedList<Event>('/api/events');
- */
 export function usePagedList<T>(
   baseUrl: string,
   opts: { pageSize?: number; extraParams?: Record<string, string> } = {}
 ) {
-  const { pageSize = 20, extraParams } = opts;
+  const { pageSize = 20 } = opts;
+
+  // FIX 1: Serialize extraParams to a stable string so it can safely be
+  // a useCallback dep without causing infinite re-renders when passed inline
+  const extraParamsStr = opts.extraParams
+    ? new URLSearchParams(opts.extraParams).toString()
+    : '';
 
   const [data, setData] = useState<T[]>([]);
   const [total, setTotal] = useState(0);
@@ -39,18 +37,24 @@ export function usePagedList<T>(
         page: String(page),
         limit: String(pageSize),
         ...(search ? { search } : {}),
-        ...(extraParams ?? {}),
       });
 
+      // Re-inflate extraParams from the stable string
+      if (extraParamsStr) {
+        new URLSearchParams(extraParamsStr).forEach((v, k) => params.set(k, v));
+      }
+
+      // FIX 2: Include credentials so auth cookies are sent
       const res = await fetch(`${baseUrl}?${params}`, {
         signal: ctrl.signal,
         cache: 'no-store',
+        credentials: 'include',
       });
 
       const json = (await res.json()) as ApiResponse<T[]>;
 
       if (!res.ok || !json.success) {
-        throw new Error(!json.success ? json.error : `HTTP ${res.status}`);
+        throw new Error(!json.success ? (json as { error?: string }).error : `HTTP ${res.status}`);
       }
 
       setData(json.data);
@@ -61,7 +65,7 @@ export function usePagedList<T>(
     } finally {
       setIsLoading(false);
     }
-  }, [baseUrl, page, pageSize, search, extraParams]);
+  }, [baseUrl, page, pageSize, search, extraParamsStr]); // stable string dep
 
   useEffect(() => {
     void load();

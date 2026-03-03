@@ -38,7 +38,7 @@ const MODULES = [
   { key: 'SPORTS', label: 'កីឡា', helper: 'គ្រប់គ្រងបញ្ជីកីឡា', icon: Medal },
   { key: 'PARTICIPANTS', label: 'អ្នកចូលរួម', helper: 'ពិនិត្យកំណត់ត្រាអ្នកចូលរួម', icon: Users },
   { key: 'PROVINCES', label: 'ខេត្ត', helper: 'រុករកតាមតំបន់ស្ថាប័ន', icon: MapPinned },
-  { key: 'SURVEY', label: 'ស្ទង់មតិ', helper: 'លំហូរស្ទង់មតិនិងទទួលព័ត៌មាន', icon: ClipboardList },
+  { key: 'SURVEY', label: 'បញ្ចីកីឡាប្រកួត', helper: 'លំហូរស្ទង់មតិនិងទទួលព័ត៌មាន', icon: ClipboardList },
 ];
 
 export function PortalModules({ routes }: PortalModulesProps) {
