@@ -49,18 +49,15 @@ type RefItem = { id: number; name: string };
 
 export function AssignmentsPage() {
   const list = usePagedList<LinkItem>(ROUTES.API.SPORT_EVENT_ORGS, { pageSize: 50 });
-  const { data: sports } = useFetchList<RefItem>(`${ROUTES.API.SPORTS}?limit=500`, (s) => ({
-    id: s.id,
-    name: s.name ?? s.name_kh ?? '',
-  }));
-  const { data: events } = useFetchList<RefItem>(`${ROUTES.API.EVENTS}?limit=500`, (e) => ({
-    id: e.id,
-    name: e.name ?? e.name_kh ?? '',
-  }));
-  const { data: orgs } = useFetchList<RefItem>(`${ROUTES.API.ORGANIZATIONS}?limit=500`, (o) => ({
-    id: o.id,
-    name: o.name ?? o.name_kh ?? '',
-  }));
+
+  const mapRef = (item: any): RefItem => ({
+    id: item.id,
+    name: item.name ?? item.name_kh ?? '',
+  });
+
+  const { data: sports } = useFetchList<RefItem>(`${ROUTES.API.SPORTS}?limit=500`, mapRef);
+  const { data: events } = useFetchList<RefItem>(`${ROUTES.API.EVENTS}?limit=500`, mapRef);
+  const { data: orgs } = useFetchList<RefItem>(`${ROUTES.API.ORGANIZATIONS}?limit=500`, mapRef);
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<LinkItem | null>(null);

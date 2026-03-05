@@ -1,25 +1,35 @@
-import { NextRequest } from 'next/server';
-import { ok, handleError } from '@/lib/api/response';
-import { backendList } from '@/lib/api/backend';
+import { NextRequest, NextResponse } from 'next/server';
+import { athletesService } from '@/domains/athletes';
+import { athleteFiltersSchema } from '@/domains/athletes';
 
-function mapAthlete(a: any) {
-  return {
-    id: a.id,
-    enrollId: a.enroll_id ?? null,
-    createdAt: a.created_at ?? '',
-  };
-}
-
-export async function GET(req: NextRequest) {
+export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = req.nextUrl;
-    const limit = searchParams.get('limit') ?? '500';
-    const skip = searchParams.get('skip') ?? '0';
+    const { searchParams } = new URL(request.url);
+    const filters = {
+      search: searchParams.get('search') || undefined,
+      sports_id: searchParams.get('sport') ? parseInt(searchParams.get('sport')!, 10) : undefined,
+      page: parseInt(searchParams.get('page') || '1', 10),
+      limit: parseInt(searchParams.get('limit') || '100', 10),
+    };
 
-    const json = await backendList<any>('/athletes/', Number(limit), Number(skip));
-    const data = (json.data ?? []).map(mapAthlete);
-    return ok(data, { total: json.count ?? data.length });
-  } catch (e) {
-    return handleError(e);
+    const validated = athleteFiltersSchema.parse(filters);
+    const result = await athletesService.getAll(validated);
+
+    return NextResponse.json({
+      success: true,
+      data: result.data,
+      meta: {
+        total: result.total,
+        page: result.page,
+        pageSize: result.pageSize,
+        totalPages: result.totalPages,
+      },
+    });
+  } catch (error) {
+    console.error('[GET /api/athletes]', error);
+    return NextResponse.json(
+      { success: false, error: error instanceof Error ? error.message : 'Failed to fetch athletes' },
+      { status: 500 }
+    );
   }
 }

@@ -57,4 +57,5 @@ export interface SportFilters {
   eventId?: number;
   page?: number;
   limit?: number;
+  skip?: number;
 }

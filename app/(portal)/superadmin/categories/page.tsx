@@ -1,5 +1,5 @@
 import { CategoriesPage } from '@/ui/features/categories';
 
 export default function SuperadminCategoriesPage() {
-  return <CategoriesPage />;
+  return <CategoriesPage role="superadmin" />;
 }

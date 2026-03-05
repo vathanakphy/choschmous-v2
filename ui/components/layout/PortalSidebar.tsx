@@ -19,6 +19,7 @@ import {
   UserCog,
   Hash,
   Swords,
+  Zap,
 } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
 import { ROUTES } from '@/config/routes';
@@ -37,6 +38,7 @@ const ADMIN_NAV: NavItem[] = [
   },
   { label: 'ព្រឹត្តិការណ៍', icon: <Calendar className="h-5 w-5" />, href: ROUTES.ADMIN.EVENTS },
   { label: 'កីឡា', icon: <Trophy className="h-5 w-5" />, href: ROUTES.ADMIN.SPORTS },
+  { label: 'វិញ្ញាសារ', icon: <Grid3X3 className="h-5 w-5" />, href: ROUTES.ADMIN.CATEGORIES },
   { label: 'អ្នកចូលរួម', icon: <Users className="h-5 w-5" />, href: ROUTES.ADMIN.PARTICIPANTS },
   { label: 'ខេត្ត', icon: <MapPin className="h-5 w-5" />, href: ROUTES.ADMIN.PROVINCES },
   { label: 'ស្ទង់មតិ', icon: <ClipboardList className="h-5 w-5" />, href: ROUTES.ADMIN.SURVEY },
@@ -64,7 +66,7 @@ const SUPERADMIN_NAV: NavItem[] = [
     href: ROUTES.SUPERADMIN.EVENTS,
   },
   { label: 'កីឡា', icon: <Trophy className="h-5 w-5" />, href: ROUTES.SUPERADMIN.SPORTS },
-  { label: 'ប្រភេទ', icon: <Grid3X3 className="h-5 w-5" />, href: ROUTES.SUPERADMIN.CATEGORIES },
+  { label: 'វិញ្ញាសារ', icon: <Grid3X3 className="h-5 w-5" />, href: ROUTES.SUPERADMIN.CATEGORIES },
   {
     label: 'អ្នកចូលរួម',
     icon: <Users className="h-5 w-5" />,
@@ -76,10 +78,25 @@ const SUPERADMIN_NAV: NavItem[] = [
     icon: <Building2 className="h-5 w-5" />,
     href: ROUTES.SUPERADMIN.ORGANIZATIONS,
   },
+  // {
+  //   label: 'ការកំណត់កីឡា',
+  //   icon: <Link2 className="h-5 w-5" />,
+  //   href: ROUTES.SUPERADMIN.ASSIGNMENTS,
+  // },
   {
-    label: 'ការកំណត់កីឡា',
+    label: 'បញ្ចីប្រភេទកីឡា',
     icon: <Link2 className="h-5 w-5" />,
-    href: ROUTES.SUPERADMIN.ASSIGNMENTS,
+    href: ROUTES.SUPERADMIN.SPORT_LINKS,
+  },
+  {
+    label: 'កីឡាព្រឹត្តិការណ៍',
+    icon: <Zap className="h-5 w-5" />,
+    href: ROUTES.SUPERADMIN.SPORTS_EVENTS,
+  },
+  {
+    label: 'បញ្ជីឈ្មោះកីឡាករ',
+    icon: <Users className="h-5 w-5" />,
+    href: ROUTES.SUPERADMIN.ATHLETES,
   },
   { label: 'មេដាយ', icon: <Medal className="h-5 w-5" />, href: ROUTES.SUPERADMIN.MEDALS },
   {
@@ -136,7 +153,7 @@ export function PortalSidebar({ mode }: PortalSidebarProps) {
       <nav className="flex-1 space-y-1 overflow-y-auto p-4">
         {items.map((item) => {
           const isActive =
-            pathname === item.href || (item.href !== base && pathname?.startsWith(item.href));
+            pathname === item.href || (item.href !== base && pathname?.startsWith(item.href + '/'));
 
           return (
             <Link

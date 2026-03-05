@@ -30,6 +30,13 @@ import {
 import { Input } from '@/ui/design-system/primitives/Input';
 import { Label } from '@/ui/design-system/primitives/label';
 import { apiClient } from '@/lib/api/client';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTriggerInput,
+  SelectValue,
+} from '@/ui/design-system/primitives/select';
 
 type SportItem = {
   id: number;
@@ -37,6 +44,10 @@ type SportItem = {
   sportType: string | null;
   createdAt: string;
 };
+const PARTICIPATION_TYPE = [
+  { value: 'ក្រុម', label: 'ក្រុម' },
+  { value: 'ឯកត្តជន', label: 'ឯកត្តជន' },
+];
 
 export function SportsPage() {
   const list = usePagedList<SportItem>(ROUTES.API.SPORTS);
@@ -193,6 +204,7 @@ export function SportsPage() {
               {editing ? 'កែសម្រួលព័ត៌មានកីឡា' : 'បំពេញព័ត៌មានដើម្បីបង្កើតកីឡាថ្មី'}
             </DialogDescription>
           </DialogHeader>
+
           <div className="space-y-4 py-2">
             <div className="space-y-2">
               <Label>ឈ្មោះកីឡា</Label>
@@ -202,20 +214,35 @@ export function SportsPage() {
                 placeholder="ឧ. បាល់ទាត់"
               />
             </div>
+
             <div className="space-y-2">
               <Label>ប្រភេទកីឡា</Label>
-              <Input
+              <Select
                 value={form.sport_type}
-                onChange={(e) => setForm((f) => ({ ...f, sport_type: e.target.value }))}
-                placeholder="ឧ. ក្រុម, បុគ្គល"
-              />
+                onValueChange={(v) => setForm((f) => ({ ...f, sport_type: v }))}
+              >
+                <SelectTriggerInput className="w-full">
+                  <SelectValue placeholder="ជ្រើសរើសប្រភេទកីឡា" />
+                </SelectTriggerInput>
+                <SelectContent>
+                  {PARTICIPATION_TYPE.map((t) => (
+                    <SelectItem key={t.value} value={t.value}>
+                      {t.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
+
           <DialogFooter>
             <Button variant="outline" onClick={() => setDialogOpen(false)} disabled={saving}>
               បោះបង់
             </Button>
-            <Button onClick={handleSave} disabled={saving || !form.name_kh || !form.sport_type}>
+            <Button
+              onClick={handleSave}
+              disabled={saving || !form.name_kh || !form.sport_type}
+            >
               {saving ? 'កំពុងរក្សាទុក...' : editing ? 'រក្សាទុក' : 'បង្កើត'}
             </Button>
           </DialogFooter>

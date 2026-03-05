@@ -84,7 +84,7 @@ export function EventsPage() {
     setSaving(true);
     try {
       if (editing) {
-        await apiClient.put(`${ROUTES.API.EVENTS}/${editing.id}`, form);
+        await apiClient.patch(`${ROUTES.API.EVENTS}/${editing.id}`, form);
       } else {
         await apiClient.post(ROUTES.API.EVENTS, form);
       }

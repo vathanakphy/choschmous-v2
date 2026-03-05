@@ -20,6 +20,11 @@ async function request<T>(url: string, options: Opts = {}): Promise<ApiResponse<
     headers: { 'Content-Type': 'application/json', ...init.headers },
     ...(body !== undefined ? { body: JSON.stringify(body) } : {}),
   });
+
+  if (res.status === 204) { //handle delete success with no content
+    return { success: true, data: null as unknown as T, meta: {} };
+  }
+
   return res.json() as Promise<ApiResponse<T>>;
 }
 

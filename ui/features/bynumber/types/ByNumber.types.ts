@@ -17,6 +17,8 @@ export interface SportSelection {
   sportName: string;
   maleCount: number;
   femaleCount: number;
+  leader_male_count: number;   // delegation leaders
+  leader_female_count: number;
 }
 
 export type ByNumberErrors = Partial<{

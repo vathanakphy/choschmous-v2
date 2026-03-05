@@ -21,6 +21,9 @@ export function ConfirmByNumberStep({ formData, onEdit, onSuccess }: ConfirmByNu
 
   const totalMale = formData.sportSelections.reduce((s, x) => s + (x.maleCount || 0), 0);
   const totalFemale = formData.sportSelections.reduce((s, x) => s + (x.femaleCount || 0), 0);
+  const totalLeaderMale = formData.sportSelections.reduce((s, x) => s + (x.leader_male_count || 0), 0);
+  const totalLeaderFemale = formData.sportSelections.reduce((s, x) => s + (x.leader_female_count || 0), 0);
+  const totalAll = totalMale + totalFemale + totalLeaderMale + totalLeaderFemale;
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -36,6 +39,9 @@ export function ConfirmByNumberStep({ formData, onEdit, onSuccess }: ConfirmByNu
               sportsEventOrgId: sel.sportsEventOrgId,
               maleCount: sel.maleCount,
               femaleCount: sel.femaleCount,
+              // leaders are purely display-only for now; backend ignores if not expected
+              leader_male_count: sel.leader_male_count,
+              leader_female_count: sel.leader_female_count,
             }),
           }).then((r) => {
             if (!r.ok) throw new Error(`Failed for ${sel.sportName}`);

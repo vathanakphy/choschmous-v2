@@ -4,10 +4,20 @@ import { useCallback, useReducer } from 'react';
 import type { ByNumberFormData, ByNumberErrors, SportSelection } from '../types/ByNumber.types';
 import { BYNUMBER_INITIAL } from '../types/ByNumber.types';
 
+type GenderKey =
+  | 'maleCount'
+  | 'femaleCount'
+  | 'leader_male_count'
+  | 'leader_female_count';
+
+// even though the by‑number flow only stores the athlete counts, the
+// helpers are generic so that the table component can be reused elsewhere
+// (and avoid type mismatches during editing).
+
 type Action =
   | { type: 'SET'; payload: Partial<ByNumberFormData> }
   | { type: 'RESET' }
-  | { type: 'SET_COUNT'; sportsEventOrgId: number; gender: 'maleCount' | 'femaleCount'; value: number }
+  | { type: 'SET_COUNT'; sportsEventOrgId: number; gender: GenderKey; value: number }
   | { type: 'INIT_SPORTS'; sports: SportSelection[] };
 
 function reducer(state: ByNumberFormData, action: Action): ByNumberFormData {
@@ -57,7 +67,7 @@ export function useByNumber() {
     []
   );
   const setCount = useCallback(
-    (sportsEventOrgId: number, gender: 'maleCount' | 'femaleCount', value: number) =>
+    (sportsEventOrgId: number, gender: GenderKey, value: number) =>
       dispatch({ type: 'SET_COUNT', sportsEventOrgId, gender, value }),
     []
   );

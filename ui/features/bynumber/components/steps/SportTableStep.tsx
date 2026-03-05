@@ -10,7 +10,7 @@ import type { ByNumberFormData, ByNumberErrors, SportSelection } from '../../typ
 interface SportTableStepProps {
   formData: ByNumberFormData;
   errors: ByNumberErrors;
-  setCount: (sportsEventOrgId: number, gender: 'maleCount' | 'femaleCount', value: number) => void;
+  setCount: (sportsEventOrgId: number, gender: 'maleCount' | 'femaleCount' | 'leader_male_count' | 'leader_female_count', value: number) => void;
   initSports: (sports: SportSelection[]) => void;
 }
 
@@ -25,9 +25,11 @@ export function SportTableStep({ formData, errors, setCount, initSports }: Sport
     sportName: item.sport_name ?? item.sports?.name_kh ?? item.sports?.name ?? `Sport ${item.sports_id}`,
     maleCount: 0,
     femaleCount: 0,
+    leader_male_count: 0,
+    leader_female_count: 0,
   });
 
-  const { data: fetchedSports, loading, error: fetchError } = useFetchList(url, mapSport, [formData.eventId, formData.organizationId]);
+  const { data: fetchedSports, loading, error: fetchError } = useFetchList(url, mapSport);
 
   useEffect(() => {
     if (fetchedSports.length > 0) initSports(fetchedSports);

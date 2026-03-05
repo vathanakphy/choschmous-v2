@@ -18,12 +18,13 @@ interface ParticipationPerSport {
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { eventId: string; orgId: string; sportId: string } }
+  context: { params: Promise<{ eventId: string; orgId: string; sportId: string }> }
 ) {
   try {
-    const eventId = parseInt(params.eventId, 10);
-    const orgId = parseInt(params.orgId, 10);
-    const sportId = parseInt(params.sportId, 10);
+    const { eventId: eventIdString, orgId: orgIdString, sportId: sportIdString } = await context.params;
+    const eventId = parseInt(eventIdString, 10);
+    const orgId = parseInt(orgIdString, 10);
+    const sportId = parseInt(sportIdString, 10);
 
     // Find the sports_event_org record
     const { data: seoRecords = [] } = await backendList<SportEventOrg>(

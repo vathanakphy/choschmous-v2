@@ -1,6 +1,10 @@
 /**
  * SportSummaryTable — themed data table for sports participant counts.
  *
+ * Leaders (ក្រុមប្រឹក្សា / delegation) are rendered in the first two columns
+ * and **are included** in the "សរុប" total column.  The grand total at the
+ * bottom is the sum of all four counts from each row.
+ *
  * Used in both SportTableStep (editable inputs) and ConfirmByNumberStep (read-only).
  * Eliminates the ~120-line inline style-heavy grid duplicated between those two files.
  *
@@ -29,13 +33,26 @@ export interface SportRow {
   sportName: string;
   maleCount: number;
   femaleCount: number;
+  leader_female_count: number;
+  leader_male_count: number;
 }
 
 interface SportSummaryTableProps {
   rows: SportRow[];
   /** "editable" renders number inputs; "readonly" renders ✓/— */
   mode?: 'editable' | 'readonly';
-  onChangeCount?: (id: number, gender: 'maleCount' | 'femaleCount', value: number) => void;
+  // we allow updating either athlete or leader counts; the reducer in the
+  // by-number feature only handles athletes today, but the table itself
+  // is generic/independent of the workflow.
+  onChangeCount?: (
+    id: number,
+    gender:
+      | 'maleCount'
+      | 'femaleCount'
+      | 'leader_male_count'
+      | 'leader_female_count',
+    value: number
+  ) => void;
   /** Per-row error check (only for editable mode) */
   hasRowError?: (row: SportRow) => boolean;
 }
@@ -63,9 +80,12 @@ export function SportSummaryTable({
   onChangeCount,
   hasRowError,
 }: SportSummaryTableProps) {
+  // grand sums; the total column should include all four values per row
   const totalMale = rows.reduce((s, r) => s + (r.maleCount || 0), 0);
   const totalFemale = rows.reduce((s, r) => s + (r.femaleCount || 0), 0);
-  const totalAll = totalMale + totalFemale;
+  const totalLeaderMale = rows.reduce((s, r) => s + (r.leader_male_count || 0), 0);
+  const totalLeaderFemale = rows.reduce((s, r) => s + (r.leader_female_count || 0), 0);
+  const totalAll = totalMale + totalFemale + totalLeaderMale + totalLeaderFemale;
 
   return (
     <div className="overflow-hidden rounded-2xl border" style={{ borderColor: COL.border }}>
@@ -73,20 +93,28 @@ export function SportSummaryTable({
       <div
         className="grid text-center text-xs font-semibold tracking-wide uppercase"
         style={{
-          gridTemplateColumns: '2fr 1fr 1fr 1fr',
+          gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr',
           backgroundColor: COL.headerBg,
           color: 'white',
         }}
       >
         <div className="px-4 py-3 text-left">ប្រភេទកីឡា</div>
-        <HeaderCell>បុរស</HeaderCell>
-        <HeaderCell>នារី</HeaderCell>
+        <HeaderCell>គណៈប្រតិភូបុរស</HeaderCell>
+        <HeaderCell>គណៈប្រតិភូនារី</HeaderCell>
+        <HeaderCell>កីឡាករ</HeaderCell>
+        <HeaderCell>កីឡាការនី</HeaderCell>
         <HeaderCell>សរុប</HeaderCell>
       </div>
 
       {/* ── Data rows ─────────────────────────────────── */}
       {rows.map((row, idx) => {
-        const rowTotal = (row.maleCount || 0) + (row.femaleCount || 0);
+        // include every field in the row total
+        const rowTotal =
+          (row.maleCount || 0) +
+          (row.femaleCount || 0) +
+          (row.leader_male_count || 0) +
+          (row.leader_female_count || 0);
+
         const isError = hasRowError?.(row) ?? false;
 
         return (
@@ -94,7 +122,7 @@ export function SportSummaryTable({
             key={row.sportsEventOrgId}
             className="grid items-center text-center"
             style={{
-              gridTemplateColumns: '2fr 1fr 1fr 1fr',
+              gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr',
               borderTop: '1px solid',
               borderColor: COL.border,
               backgroundColor: isError
@@ -112,33 +140,67 @@ export function SportSummaryTable({
               {row.sportName}
             </div>
 
-            {/* Male */}
+            {/* Leader Male */}
+            <DataCell borderColor={COL.border}>
+              {mode === 'editable' ? (
+                <NumberInput
+                  value={row.leader_male_count}
+                  onValueChange={(v) => onChangeCount?.(row.sportsEventOrgId, 'leader_male_count', v)}
+                  color={COL.maleColor}
+                />
+              ) : (
+                <span style={{ color: COL.maleColor }}>
+                  {row.leader_male_count > 0 ? row.leader_male_count : '—'}
+                </span>
+              )}
+            </DataCell>
+
+            {/* Leader Female */}
+            <DataCell borderColor={COL.border}>
+              {mode === 'editable' ? (
+                <NumberInput
+                  value={row.leader_female_count}
+                  onValueChange={(v) => onChangeCount?.(row.sportsEventOrgId, 'leader_female_count', v)}
+                  color={COL.femaleColor}
+                />
+              ) : (
+                <span style={{ color: COL.femaleColor }}>
+                  {row.leader_female_count > 0 ? row.leader_female_count : '—'}
+                </span>
+              )}
+            </DataCell>
+
+            {/* Male Athletes */}
             <DataCell borderColor={COL.border}>
               {mode === 'editable' ? (
                 <NumberInput
                   value={row.maleCount}
-                  onChange={(v) => onChangeCount?.(row.sportsEventOrgId, 'maleCount', v)}
+                  onValueChange={(v) => onChangeCount?.(row.sportsEventOrgId, 'maleCount', v)}
                   color={COL.maleColor}
                 />
               ) : (
-                <span style={{ color: COL.maleColor }}>{row.maleCount > 0 ? '✓' : '—'}</span>
+                <span style={{ color: COL.maleColor }}>
+                  {row.maleCount > 0 ? row.maleCount : '—'}
+                </span>
               )}
             </DataCell>
 
-            {/* Female */}
+            {/* Female Athletes */}
             <DataCell borderColor={COL.border}>
               {mode === 'editable' ? (
                 <NumberInput
                   value={row.femaleCount}
-                  onChange={(v) => onChangeCount?.(row.sportsEventOrgId, 'femaleCount', v)}
+                  onValueChange={(v) => onChangeCount?.(row.sportsEventOrgId, 'femaleCount', v)}
                   color={COL.femaleColor}
                 />
               ) : (
-                <span style={{ color: COL.femaleColor }}>{row.femaleCount > 0 ? '✓' : '—'}</span>
+                <span style={{ color: COL.femaleColor }}>
+                  {row.femaleCount > 0 ? row.femaleCount : '—'}
+                </span>
               )}
             </DataCell>
 
-            {/* Row total */}
+            {/* Row Total */}
             <div
               className="border-l px-4 py-2.5 text-sm font-semibold"
               style={{ borderColor: COL.border, color: COL.textMed }}
@@ -153,7 +215,7 @@ export function SportSummaryTable({
       <div
         className="grid text-center text-sm font-bold"
         style={{
-          gridTemplateColumns: '2fr 1fr 1fr 1fr',
+          gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr',
           borderTop: '2px solid',
           borderColor: COL.summaryBorder,
           backgroundColor: COL.summaryBg,
@@ -161,6 +223,18 @@ export function SportSummaryTable({
       >
         <div className="px-4 py-3 text-left" style={{ color: COL.textMed }}>
           សរុប
+        </div>
+        <div
+          className="border-l px-4 py-3"
+          style={{ borderColor: COL.border, color: COL.maleColor }}
+        >
+          {totalLeaderMale}
+        </div>
+        <div
+          className="border-l px-4 py-3"
+          style={{ borderColor: COL.border, color: COL.femaleColor }}
+        >
+          {totalLeaderFemale}
         </div>
         <div
           className="border-l px-4 py-3"
@@ -205,23 +279,26 @@ function DataCell({ children, borderColor }: { children: React.ReactNode; border
 
 function NumberInput({
   value,
-  onChange,
+  onValueChange,
   color,
 }: {
   value: number;
-  onChange?: (v: number) => void;
+  onValueChange?: (v: number) => void;
   color: string;
 }) {
+  // event handler typed to avoid implicit any and make the naming clear
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const v = parseInt(e.target.value, 10);
+    onValueChange?.(isNaN(v) || v < 0 ? 0 : v);
+  };
+
   return (
     <input
       type="number"
       min={0}
       value={value === 0 ? '' : value}
       placeholder="0"
-      onChange={(e) => {
-        const v = parseInt(e.target.value, 10);
-        onChange?.(isNaN(v) || v < 0 ? 0 : v);
-      }}
+      onChange={handleChange}
       className="w-full rounded-lg border px-2 py-1 text-center text-sm font-medium transition outline-none focus:ring-2"
       style={{
         borderColor: value > 0 ? color : 'var(--reg-slate-200)',
