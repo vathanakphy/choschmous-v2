@@ -79,8 +79,9 @@ export function SportsEventsPage() {
 
     // Fetch lookup data
     const mapName = (r: any): NamedItem => ({ id: r.id, name: r.name ?? r.name_kh });
-    const events = useFetchList<NamedItem>(`${ROUTES.API.EVENTS}`, mapName);
-    const sports = useFetchList<NamedItem>(`${ROUTES.API.SPORTS}`, mapName);
+    // Request larger pages so dropdowns show the full list (API default limit is 20)
+    const events = useFetchList<NamedItem>(`${ROUTES.API.EVENTS}?limit=100`, mapName);
+    const sports = useFetchList<NamedItem>(`${ROUTES.API.SPORTS}?limit=100`, mapName);
 
     // Enrich data with event and sport names
     const enrichedData = useMemo(
